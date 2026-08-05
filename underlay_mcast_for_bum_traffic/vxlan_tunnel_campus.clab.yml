@@ -1,0 +1,53 @@
+# NYU Campus — Simplified Cisco+Arista VTEP with endpoint
+#
+# 4 nodes: firewall, Cisco VTEP (BROADWAYGW-N),
+#          Arista VTEP (AG01-POC-AR-1A), endpoint
+#
+# Topology:
+#
+#   [Firewall]
+#      eth1
+#       |
+#      eth1
+#   [BROADWAYGW-N (Cisco VTEP)]
+#      eth25
+#       |
+#      eth25
+#   [AG01-POC-AR-1A (Arista VTEP)]
+#      eth1    eth2
+#       |        |
+#      eth1    eth2
+#      [Endpoint]
+#
+# Connections:
+#   firewall:eth1        --- broadwaygw-n:eth1      (firewall uplink)
+#   broadwaygw-n:eth25   --- ag01-poc-ar-1a:eth25   (Cisco VTEP to Arista VTEP)
+#   ag01-poc-ar-1a:eth1  --- endpoint:eth1          (VTEP to endpoint)
+#   ag01-poc-ar-1a:eth2  --- endpoint:eth2          (VTEP to endpoint)
+
+name: underlay-mcast-for-bum-campus
+
+topology:
+  kinds:
+    arista_ceos:
+      image: ceos:4.36.1F
+
+  nodes:
+    firewall:
+      kind: arista_ceos
+    broadwaygw-n:
+      kind: arista_ceos
+    ag01-poc-ar-1a:
+      kind: arista_ceos
+    endpoint:
+      kind: arista_ceos
+
+  links:
+    # Firewall Eth1 --- BROADWAYGW-N Eth1
+    - endpoints: ["firewall:eth1", "broadwaygw-n:eth1"]
+    # BROADWAYGW-N Eth25 --- AG01-POC-AR-1A Eth25
+    - endpoints: ["broadwaygw-n:eth25", "ag01-poc-ar-1a:eth25"]
+    # AG01-POC-AR-1A Eth1 --- Endpoint Eth1
+    - endpoints: ["ag01-poc-ar-1a:eth1", "endpoint:eth1"]
+    # AG01-POC-AR-1A Eth2 --- Endpoint Eth2
+    - endpoints: ["ag01-poc-ar-1a:eth2", "endpoint:eth2"]
