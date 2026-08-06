@@ -1,0 +1,45 @@
+# STP Triangle with MLAG Base
+#
+# 4 nodes: core1, core2, leaf1a, leaf1b
+#
+# Topology (ring):
+#
+#   [core1] eth1 --- eth1 [core2]
+#      eth2                  eth2
+#       |                     |
+#      eth1                  eth1
+#   [leaf1a] eth2 --- eth2 [leaf1b]
+#
+# Connections:
+#   core1:eth1  --- core2:eth1  (core1 to core2)
+#   core2:eth2  --- leaf1b:eth1 (core2 to leaf1b)
+#   leaf1b:eth2 --- leaf1a:eth1 (leaf1b to leaf1a)
+#   leaf1a:eth2 --- core1:eth2  (leaf1a to core1)
+
+name: stp-triangle-with-mlag-base
+
+topology:
+  kinds:
+    arista_ceos:
+      image: ceos:4.36.1F
+
+  nodes:
+    core1:
+      kind: arista_ceos
+    core2:
+      kind: arista_ceos
+    leaf1a:
+      kind: arista_ceos
+    leaf1b:
+      kind: arista_ceos
+
+  links:
+    # core1 Eth1 --- core2 Eth1
+    - endpoints: ["core1:eth1", "core2:eth1"]
+    # core1 Eth2 --- leaf1a Eth2
+    - endpoints: ["core1:eth2", "leaf1a:eth2"]
+    # core2 Eth2 --- leaf1b Eth2
+    - endpoints: ["core2:eth2", "leaf1b:eth2"]
+    # leaf1a Eth2 --- leaf1b Eth1
+    - endpoints: ["leaf1a:eth1", "leaf1b:eth1"]
+
