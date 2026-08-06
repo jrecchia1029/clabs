@@ -1,0 +1,52 @@
+! Startup-config last modified at Thu Aug  6 17:18:59 2026 by root
+! device: core2 (cEOSLab, EOS-4.36.1F-48405728.4361F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$nBSbANuaeitijC.Y$0LpeAvgT6w1PlN62Ut83g7.BzPQLIaQr5zOyVHvnpkxmzBfHEuYNPK3jZ7975x1Gy0TGnXgzuhc5uyM1mOyF50
+!
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+service routing protocols model multi-agent
+!
+hostname core2
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan-id 1-4094 priority 8192
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+vrf instance MGMT
+!
+management api gnmi
+   transport grpc default
+      vrf MGMT
+!
+management api netconf
+   transport ssh default
+      vrf MGMT
+!
+interface Ethernet1
+   switchport mode trunk
+!
+interface Ethernet2
+   switchport mode trunk
+!
+interface Management0
+   vrf MGMT
+   ip address 172.100.100.5/24
+!
+no ip routing
+no ip routing vrf MGMT
+!
+ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+!
+end

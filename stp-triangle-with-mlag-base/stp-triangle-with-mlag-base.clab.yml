@@ -7,21 +7,33 @@
 #   [core1] eth1 --- eth1 [core2]
 #      eth2                  eth2
 #       |                     |
-#      eth1                  eth1
-#   [leaf1a] eth2 --- eth2 [leaf1b]
+#      eth2                  eth2
+#   [leaf1a] eth1 --- eth1 [leaf1b]
 #
 # Connections:
 #   core1:eth1  --- core2:eth1  (core1 to core2)
-#   core2:eth2  --- leaf1b:eth1 (core2 to leaf1b)
-#   leaf1b:eth2 --- leaf1a:eth1 (leaf1b to leaf1a)
-#   leaf1a:eth2 --- core1:eth2  (leaf1a to core1)
+#   core1:eth2  --- leaf1a:eth2 (core1 to leaf1a)
+#   core2:eth2  --- leaf1b:eth2 (core2 to leaf1b)
+#   leaf1a:eth1 --- leaf1b:eth1 (leaf1a to leaf1b)
 
 name: stp-triangle-with-mlag-base
 
+mgmt:
+  network: mgmt
+  ipv4-subnet: 172.100.100.0/24
+
 topology:
+  defaults:
+    kind: arista_ceos
+
   kinds:
     arista_ceos:
-      image: ceos:4.36.1F
+      image: arista/ceos:latest
+      env:
+        CLAB_MGMT_VRF: MGMT
+        INTFTYPE: eth
+        ETBA: 1
+        SKIP_ZEROTOUCH_BARRIER_IN_SYSDBINIT: 1
 
   nodes:
     core1:

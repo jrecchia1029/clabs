@@ -1,0 +1,78 @@
+! Startup-config last modified at Thu Aug  6 17:18:59 2026 by root
+! device: leaf1b (cEOSLab, EOS-4.36.1F-48405728.4361F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$WMa3GdAGob4.uflJ$JTIp8V7dLXQzaEcjyQxm/gj3g5Zks/FC941ObO6jkQXLLXlH.ahQ4EusFAoslfIA4Eo35cI9hYlyxuaUqLnk/.
+!
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+!
+no service interface inactive port-id allocation disabled
+!
+service routing protocols model multi-agent
+!
+hostname leaf1b
+!
+spanning-tree mode mstp
+no spanning-tree vlan-id 4094
+spanning-tree mst 0 priority 57344
+spanning-tree guard loop default
+!
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+!
+vlan 4094
+   name MLAG_PEER
+   trunk group MLAG
+!
+vrf instance MGMT
+!
+management api gnmi
+   transport grpc default
+      vrf MGMT
+!
+management api netconf
+   transport ssh default
+      vrf MGMT
+!
+interface Port-Channel1
+   description MLAG_PEER_LEAF1A
+   switchport mode trunk
+   switchport trunk group MLAG
+!
+interface Ethernet1
+   channel-group 1 mode active
+!
+interface Ethernet2
+   description to Core2
+   switchport mode trunk
+!
+interface Management0
+   vrf MGMT
+   ip address 172.100.100.3/24
+!
+interface Vlan4094
+   description MLAG_PEER
+   mtu 1500
+   no autostate
+   ip address 192.168.255.255/31
+!
+no ip routing
+no ip routing vrf MGMT
+!
+mlag configuration
+   domain-id MLAG
+   local-interface Vlan4094
+   peer-address 192.168.255.254
+   peer-link Port-Channel1
+   reload-delay mlag 45
+   reload-delay non-mlag 60
+!
+ip route vrf MGMT 0.0.0.0/0 172.100.100.1
+!
+end
