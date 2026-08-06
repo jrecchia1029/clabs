@@ -27,10 +27,22 @@
 
 name: underlay-mcast-for-bum-campus
 
+mgmt:
+  network: mgmt
+  ipv4-subnet: 172.100.100.0/24
+
 topology:
+  defaults:
+    kind: arista_ceos
+
   kinds:
     arista_ceos:
-      image: ceos:4.36.1F
+      image: arista/ceos:latest
+      env:
+        CLAB_MGMT_VRF: MGMT
+        INTFTYPE: eth
+        ETBA: 1
+        SKIP_ZEROTOUCH_BARRIER_IN_SYSDBINIT: 1
 
   nodes:
     firewall:
