@@ -1,0 +1,40 @@
+{
+  "freeTextAnnotations": [],
+  "freeShapeAnnotations": [],
+  "trafficRateAnnotations": [],
+  "groupStyleAnnotations": [],
+  "networkNodeAnnotations": [],
+  "nodeAnnotations": [
+    {
+      "id": "firewall",
+      "position": {
+        "x": 350,
+        "y": 100
+      }
+    },
+    {
+      "id": "broadwaygw-n",
+      "position": {
+        "x": 350,
+        "y": 250
+      }
+    },
+    {
+      "id": "ag01-poc-ar-1a",
+      "position": {
+        "x": 350,
+        "y": 400
+      }
+    },
+    {
+      "id": "endpoint",
+      "position": {
+        "x": 350,
+        "y": 550
+      }
+    }
+  ],
+  "edgeAnnotations": [],
+  "aliasEndpointAnnotations": [],
+  "viewerSettings": {}
+}
