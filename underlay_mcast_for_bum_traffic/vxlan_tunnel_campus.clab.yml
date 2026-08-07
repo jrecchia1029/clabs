@@ -47,12 +47,16 @@ topology:
   nodes:
     firewall:
       kind: arista_ceos
+      startup-config: startup-configs/firewall.cfg
     broadwaygw-n:
       kind: arista_ceos
+      startup-config: startup-configs/broadwaygw-n.cfg
     ag01-poc-ar-1a:
       kind: arista_ceos
+      startup-config: startup-configs/ag01-poc-ar-1a.cfg
     endpoint:
       kind: arista_ceos
+      startup-config: startup-configs/endpoint.cfg
 
   links:
     # Firewall Eth1 --- BROADWAYGW-N Eth1
